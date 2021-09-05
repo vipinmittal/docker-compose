@@ -1,7 +1,7 @@
 FROM php:7.3.6-fpm
 LABEL maintainer="vipin.mittal@publicissapient.com"
 
-RUN apt-get update && apt-get install -y --fix-missing \
+RUN apt-get update && apt-get install -y \
     mysql-client \
     imagemagick \
     graphviz \
@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y --fix-missing \
     libxml2-dev \
     libxslt1-dev \
     wget \
-    linux-libc-dev \
     libyaml-dev \
     libzip-dev \
     libicu-dev \
@@ -44,15 +43,6 @@ RUN curl https://drupalconsole.com/installer -L -o /usr/local/bin/drupal \
   && chmod +x /usr/local/bin/drupal
 
 RUN php --version; composer --version; drupal --version
-
-# Install Terminus.
-RUN cd /
-RUN mkdir terminus
-RUN cd terminus/ && \
-  curl -O https://raw.githubusercontent.com/pantheon-systems/terminus-installer/master/builds/installer.phar && php installer.phar install
-
-RUN echo "alias terminus=/terminus/vendor/bin/terminus" \
-  > /root/.bashrc
 
 RUN cd /usr/src && \
     curl -sS http://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
